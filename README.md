@@ -1,108 +1,97 @@
-# EN
-## Foodgram Project – Grocery Assistant
+# Foodgram – Rezeptplattform mit Einkaufslisten
 
-### On this service, users will be able to publish recipes, subscribe
-to other users' publications, etc.
+Foodgram ist eine Full-Stack-Webanwendung zum Veröffentlichen, Entdecken und Organisieren von Rezepten. Benutzer:innen können eigene Rezepte erstellen, anderen Profilen folgen, Favoriten pflegen und Zutaten aus ausgewählten Rezepten in eine persönliche Einkaufsliste übernehmen.
 
-### The user can also create a list of products and add the ingredients needed for the recipe there.
+## Kernfunktionen
 
-- Cloning a remote repository
+- Benutzerregistrierung und Anmeldung (Token-basierte Authentifizierung).
+- Rezepte erstellen, bearbeiten, anzeigen und löschen.
+- Zutaten und Tags zur strukturierten Suche/Filterung von Rezepten.
+- Favoriten und persönliche Einkaufslisten.
+- Autor:innen abonnieren und deren neue Rezepte verfolgen.
+- Admin-Bereich über Django Admin.
+
+## Tech-Stack
+
+- **Backend:** Django, Django REST Framework, Djoser
+- **Frontend:** React
+- **Datenbank:** PostgreSQL
+- **Infra/Deployment:** Docker Compose + Nginx
+
+## Projektstruktur
+
+- `backend/` – Django-Projekt mit API, Modellen und Admin.
+- `frontend/` – React-Frontend.
+- `infra/` – Docker-Compose- und Nginx-Konfiguration.
+
+## Schnellstart mit Docker
+
+### 1) Repository klonen
+
 ```bash
-git clone git@github.com:Danila747/foodgram-project-react.git
-cd infra
+git clone <DEIN_REPO_LINK>
+cd Recipe_Posting_SIte
 ```
-- In the /infra directory, create a .env file with environment variables like .env.example
-- Container assembly
+
+### 2) Umgebungsvariablen anlegen
+
+Erstelle die Datei `infra/.env` (Beispiel):
+
+```env
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=change-me
+DEBUG=False
+```
+
+### 3) Container starten
+
 ```bash
+cd infra
 docker-compose up -d --build
 ```
+
+### 4) Migrationen, statische Dateien, Admin-User
+
 ```bash
-docker-compose exec backend python manage.py makemigrations
 docker-compose exec backend python manage.py migrate
-docker-compose exec backend python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py collectstatic --noinput
 docker-compose exec backend python manage.py createsuperuser
 ```
-- FIll the database
+
+### 5) Testdaten laden (optional)
+
 ```bash
 docker-compose exec backend python manage.py load_data
 ```
 
-### Запуск проекта локально
+## Lokale Entwicklung (ohne Docker)
 
 ```bash
 cd backend
 python -m venv venv
-source venv/Scripts/activate
-python -m pip install --upgrade pip
+source venv/bin/activate  # unter Windows: venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
-```
-```bash
-python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --noinput
+python manage.py runserver
 ```
-- Fill the database
+
+Optional können Testdaten geladen werden:
+
 ```bash
 python manage.py load_data
 ```
 
-- Start the server
-```bash
-python manage.py runserver 
-```
+## API und Oberfläche
 
-# DE
-## Das Foodgram-Projekt ist ein Lebensmittelassistent
+- Backend/API lokal: `http://127.0.0.1:8000/`
+- Admin: `http://127.0.0.1:8000/admin/`
+- API-Endpunkte: `http://127.0.0.1:8000/api/`
 
-### Auf diesem Dienst können Benutzer Rezepte veröffentlichen, abonnieren 
-auf die Veröffentlichung anderer Benutzer usw.
-
-###
-
-- Klonen eines Remote-Repositorys
-```bash
-git clone git@github.com:Danila747/foodgram-project-react.git
-cd infra
-```
-- Erstellen Sie im Verzeichnis /infra eine Datei.env, mit Umgebungsvariablen wie .env.example
-- Montage von Containern
-```bash
-docker-compose up -d --build
-```
-```bash
-docker-compose exec backend python manage.py makemigrations
-docker-compose exec backend python manage.py migrate
-docker-compose exec backend python manage.py collectstatic --no-input
-docker-compose exec backend python manage.py createsuperuser
-```
-- Füllen Sie die Datenbank aus
-```bash
-docker-compose exec backend python manage.py load_data
-```
-- oder füllen Sie die Datenbank mit Testdaten aus
-```bash
-docker-compose exec backend python manage.py loaddata data/data.json 
-```
-#### Führen Sie das Projekt lokal aus
-
-```bash
-cd backend
-python -m venv venv
-source venv/Scripts/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-```bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic --noinput
-```
-- Füllen Sie die Datenbank aus
-```bash
-python manage.py load_data
-```
-
-- Starten des Servers
-```bash
-python manage.py runserver 
-```
+Bei Docker-Start über Nginx ist die Anwendung typischerweise unter Port `80` erreichbar.
